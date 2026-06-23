@@ -1,15 +1,21 @@
 from django import forms
-from .models import booking
+from .models import booking, Prescription
+
 
 class dateinput(forms.DateInput):
     input_type = 'date'
 
+
 class bookingform(forms.ModelForm):
+
     class Meta:
+
         model = booking
+
         fields = '__all__'
 
         widgets = {
+
             'p_name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter your full name'
@@ -40,4 +46,30 @@ class bookingform(forms.ModelForm):
             'p_phone': 'Phone Number',
             'doc_name': 'Select Doctor',
             'booking_date': 'Booking Date',
+        }
+
+
+class PrescriptionForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Prescription
+
+        fields = ['patient_name', 'prescription_file']
+
+        widgets = {
+
+            'patient_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter patient name'
+            }),
+
+            'prescription_file': forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
+        }
+
+        labels = {
+            'patient_name': 'Patient Name',
+            'prescription_file': 'Upload Prescription'
         }

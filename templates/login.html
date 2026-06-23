@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Patient Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.card{
+    width:400px;
+    background:#fff;
+    padding:40px;
+    border-radius:25px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo h1{
+    color:#2563eb;
+    font-size:32px;
+}
+
+.logo p{
+    color:#64748b;
+}
+
+.input-box{
+    margin-bottom:20px;
+}
+
+.input-box label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:500;
+}
+
+.input-box input{
+    width:100%;
+    padding:15px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    font-size:16px;
+    outline:none;
+}
+
+.input-box input:focus{
+    border:2px solid #2563eb;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#64748b;
+    font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="logo">
+
+<h1>Patient Login Portal</h1>
+
+
+
+</div>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="input-box">
+
+<label>Username</label>
+
+<input
+type="text"
+name="username"
+placeholder="Enter username"
+required>
+
+</div>
+
+<div class="input-box">
+
+<label>Password</label>
+
+<input
+type="password"
+name="password"
+placeholder="Enter password"
+required>
+
+</div>
+
+<button type="submit">
+
+Login
+
+</button>
+
+</form>
+
+<div class="footer">
+
+
+
+</div>
+
+</div>
+
+</body>
+</html>

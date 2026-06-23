@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Patient Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f7fc;
+}
+
+.header{
+height:80px;
+background:#2563eb;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 40px;
+color:white;
+}
+
+.container{
+display:flex;
+}
+
+.sidebar{
+width:260px;
+min-height:100vh;
+background:#0f172a;
+padding:30px 0;
+}
+
+.sidebar a{
+display:block;
+padding:18px 30px;
+text-decoration:none;
+color:white;
+font-size:16px;
+}
+
+.sidebar a:hover{
+background:#2563eb;
+}
+
+.content{
+flex:1;
+padding:30px;
+}
+
+.card-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.upload-box{
+background:white;
+padding:25px;
+margin-top:30px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+button{
+padding:12px 20px;
+background:#2563eb;
+border:none;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+th{
+background:#2563eb;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>🏥 Patient Dashboard</h1>
+
+<h3>Welcome {{ request.user.username }}</h3>
+
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+
+<a href="#">👤 My Profile</a>
+
+<a href="/booking/">📅 Book Appointment</a>
+
+<a href="#">⏳ Appointment Status</a>
+
+<a href="#">👨‍⚕️ Doctor Details</a>
+
+<a href="#">🩺 Medical History</a>
+
+<a href="#">📄 Previous Prescriptions</a>
+
+<a href="#">📤 Upload Prescription</a>
+
+<a href="/logout/">🚪 Logout</a>
+
+</div>
+
+<div class="content">
+
+<div class="card-container">
+
+<div class="card">
+
+<a href="/profile/">👤 My Profile</a>
+
+<p>View your profile information.</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🎟 Your Token Number</h3>
+
+<h1>{{ token_no }}</h1>
+
+<p>Please wait for your turn.</p>
+
+</div>
+
+<div class="card">
+
+<h3>📄 Prescriptions</h3>
+
+<p>View uploaded prescriptions.</p>
+
+</div>
+
+</div>
+
+<div class="upload-box">
+
+<h2>Upload Prescription</h2>
+
+<br>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button type="submit">
+
+Upload Prescription
+
+</button>
+
+</form>
+
+</div>
+
+<div class="upload-box">
+
+<h2>Prescription History</h2>
+
+<table>
+
+<tr>
+
+<th>Patient</th>
+
+<th>Prescription</th>
+
+<th>Date</th>
+
+</tr>
+
+{% for p in prescriptions %}
+
+<tr>
+
+<td>{{ p.patient_name }}</td>
+
+<td>
+
+<a href="{{ p.prescription_file.url }}">
+
+View File
+
+</a>
+
+</td>
+
+<td>{{ p.uploaded_at }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

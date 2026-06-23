@@ -12,4 +12,7 @@ urlpatterns = [
  path('contact/', views.contact, name='contact'),
  path('department/', views.department, name='department'),
  path('prescription/', include('prescription.urls')),
+ path('patient-dashboard/',views.patient_dashboard,name='patient_dashboard'),
+ path('login/', views.patient_login, name='login'),
+ path('profile/', views.profile, name='profile'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

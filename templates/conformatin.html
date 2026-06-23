@@ -3,11 +3,21 @@
 {% block title %}Confirmation{% endblock %}
 
 {% block content %}
-<div class="containeer text-center my-5">
 
-    <h1>Confirmation page</h1>
-    <div class="alert alert-info" role="alert">
-        We have received your appointment request. We will contact you soon to confirm the details.
+<div class="container text-center my-5">
+
+    <h1>✅ Booking Successful</h1>
+
+    <div class="alert alert-success">
+
+        <h3>Your booking is successful.</h3>
+
+        <h2>Your Token Number: {{ token }}</h2>
+
+        <p>Please wait for your turn.</p>
+
+    </div>
+
 </div>
- </div>
+
 {% endblock %}

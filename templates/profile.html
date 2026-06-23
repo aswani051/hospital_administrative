@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f7fc;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+.profile-card{
+
+width:500px;
+
+background:white;
+
+padding:40px;
+
+border-radius:20px;
+
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+
+text-align:center;
+
+}
+
+.profile-image{
+
+width:120px;
+
+height:120px;
+
+border-radius:50%;
+
+background:#2563eb;
+
+color:white;
+
+font-size:50px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+margin:0 auto 20px;
+
+}
+
+h1{
+
+margin-bottom:25px;
+
+color:#2563eb;
+
+}
+
+.info{
+
+text-align:left;
+
+margin-top:20px;
+
+}
+
+.info p{
+
+padding:12px;
+
+border-bottom:1px solid #ddd;
+
+font-size:16px;
+
+}
+
+strong{
+
+color:#2563eb;
+
+}
+
+.back-btn{
+
+display:inline-block;
+
+margin-top:25px;
+
+padding:12px 20px;
+
+background:#2563eb;
+
+color:white;
+
+text-decoration:none;
+
+border-radius:8px;
+
+}
+
+.back-btn:hover{
+
+background:#1d4ed8;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="profile-card">
+
+<div class="profile-image">
+
+👤
+
+</div>
+
+<h1>My Profile</h1>
+
+<div class="info">
+
+<p><strong>Username:</strong> {{ request.user.username }}</p>
+
+<p><strong>Email:</strong> {{ request.user.email }}</p>
+
+<p><strong>First Name:</strong> {{ request.user.first_name }}</p>
+
+<p><strong>Last Name:</strong> {{ request.user.last_name }}</p>
+
+</div>
+
+<a href="/patient_dashboard/" class="back-btn">
+
+⬅ Back to Dashboard
+
+</a>
+
+</div>
+
+</body>
+
+</html>
