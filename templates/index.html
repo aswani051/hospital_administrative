@@ -1,49 +1,627 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/index.css' %}">
+{% endblock %}
+
 {% block title %}Home{% endblock %}
 
 {% block content %}
 
 
 
-<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="10000">
-      <img src="{% static 'image/car1.jpg' %}" class="d-block w-100" alt="...">
-      
+
+
+<!-- ================= HERO SECTION START ================= -->
+
+<section id="hero" class="hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-container">
+
+        <div class="hero-content">
+
+            <span class="hero-tag">
+                ★ Trusted Healthcare Since 1985
+            </span>
+
+            <h1>
+                Health is not a
+                <span>Privilege.</span>
+            </h1>
+
+            <p>
+                At Aswani Hospital, we combine advanced technology,
+                experienced specialists, and compassionate care to
+                deliver world-class healthcare for every patient.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#doctors" class="btn-primary">
+                    Find a Doctor
+                </a>
+
+                <a href="#appointment" class="btn-secondary">
+                    Book Appointment
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-card">
+
+            <h3>Emergency</h3>
+
+            <h2>24 / 7</h2>
+
+            <p>
+                Our emergency department is available
+                day and night.
+            </p>
+
+            <hr>
+
+            <h4>Call Now</h4>
+
+            <h3>+91 98765 43210</h3>
+
+        </div>
+
     </div>
-    <div class="carousel-item" data-bs-interval="2000">
-      <img src="{% static 'image/car2.jpg' %}" class="d-block w-100" alt="...">
-      
+
+</section>
+
+<!-- ================= HERO SECTION END ================= -->
+
+<!-- ================= STATISTICS SECTION START ================= -->
+
+<section id="stats" class="stats">
+
+    <div class="stats-container">
+
+        <div class="stat-box">
+            <i class="fa-solid fa-user-doctor"></i>
+            <h2 class="counter" data-target="120">0</h2>
+            <h4>Doctors</h4>
+            <p>Highly qualified specialists.</p>
+        </div>
+
+        <div class="stat-box">
+            <i class="fa-solid fa-bed-pulse"></i>
+            <h2 class="counter" data-target="250">0</h2>
+            <h4>Hospital Beds</h4>
+            <p>Modern and comfortable rooms.</p>
+        </div>
+
+        <div class="stat-box">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h2 class="counter" data-target="35000">0</h2>
+            <h4>Happy Patients</h4>
+            <p>Trusted healthcare for everyone.</p>
+        </div>
+
+        <div class="stat-box">
+            <i class="fa-solid fa-award"></i>
+            <h2 class="counter" data-target="40">0</h2>
+            <h4>Years Experience</h4>
+            <p>Serving the community since 1985.</p>
+        </div>
+
     </div>
-    <div class="carousel-item">
-      <img src="{% static 'image/car3.jpg' %}" class="d-block w-100" alt="...">
-      
+    <script>
+        // ================= Counter Animation =================
+
+const counters = document.querySelectorAll(".counter");
+
+const speed = 200;
+
+counters.forEach(counter => {
+
+    const updateCount = () => {
+
+        const target = +counter.getAttribute("data-target");
+
+        const count = +counter.innerText;
+
+        const increment = target / speed;
+
+        if(count < target){
+
+            counter.innerText = Math.ceil(count + increment);
+
+            setTimeout(updateCount,10);
+
+        }else{
+
+            counter.innerText = target;
+
+        }
+
+    };
+
+    updateCount();
+
+});
+</script>
+
+</section>
+
+<!-- ================= STATISTICS SECTION END ================= -->
+ <!-- ================= ABOUT SECTION START ================= -->
+
+<section id="about" class="about">
+
+    <div class="about-container">
+
+        <div class="about-image">
+
+            <img src="{% static 'images/about.jpg' %}" alt="About Hospital">
+
+            <div class="experience-card">
+                <h2>40+</h2>
+                <p>Years of Excellence</p>
+            </div>
+
+        </div>
+
+        <div class="about-content">
+
+            <span class="section-title">ABOUT US</span>
+
+            <h2>
+                Providing Quality Healthcare
+                For Every Patient
+            </h2>
+
+            <p>
+
+                At Aswani Hospital, we believe healthcare is more than
+                treatment—it's about compassion, trust, and innovation.
+                Our team of experienced doctors and healthcare
+                professionals delivers world-class medical services
+                using advanced technology and patient-centered care.
+
+            </p>
+
+            <div class="about-features">
+
+                <div class="feature">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <div>
+
+                        <h4>Expert Medical Team</h4>
+
+                        <p>Highly experienced specialists across all departments.</p>
+
+                    </div>
+
+                </div>
+
+                <div class="feature">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <div>
+
+                        <h4>Advanced Technology</h4>
+
+                        <p>Modern equipment for accurate diagnosis and treatment.</p>
+
+                    </div>
+
+                </div>
+
+                <div class="feature">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <div>
+
+                        <h4>24/7 Emergency</h4>
+
+                        <p>Immediate emergency medical support anytime.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <a href="#" class="about-btn">
+
+                Learn More
+
+            </a>
+
+        </div>
+
     </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
 
+</section>
 
+<!-- ================= ABOUT SECTION END ================= -->
+ <!-- ================= DEPARTMENTS SECTION START ================= -->
 
+<section id="departments" class="departments">
 
+    <div class="section-heading">
 
+        <span>OUR DEPARTMENTS</span>
 
+        <h2>Specialized Medical Services</h2>
 
+        <p>
+            We provide comprehensive healthcare services with experienced
+            specialists and advanced medical technology.
+        </p>
 
- 
+    </div>
 
+    <div class="department-grid">
+
+        <div class="department-card">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <h3>Cardiology</h3>
+            <p>Advanced heart care with modern diagnostic and treatment facilities.</p>
+            <a href="#">Read More →</a>
+        </div>
+
+        <div class="department-card">
+            <i class="fa-solid fa-brain"></i>
+            <h3>Neurology</h3>
+            <p>Comprehensive care for brain, spine, and nervous system disorders.</p>
+            <a href="#">Read More →</a>
+        </div>
+
+        <div class="department-card">
+            <i class="fa-solid fa-bone"></i>
+            <h3>Orthopedics</h3>
+            <p>Expert treatment for bones, joints, fractures, and sports injuries.</p>
+            <a href="#">Read More →</a>
+        </div>
+
+        <div class="department-card">
+            <i class="fa-solid fa-eye"></i>
+            <h3>Ophthalmology</h3>
+            <p>Complete eye care including diagnosis, surgery, and vision correction.</p>
+            <a href="#">Read More →</a>
+        </div>
+
+        <div class="department-card">
+            <i class="fa-solid fa-baby"></i>
+            <h3>Pediatrics</h3>
+            <p>Specialized healthcare services for infants, children, and adolescents.</p>
+            <a href="#">Read More →</a>
+        </div>
+
+        <div class="department-card">
+            <i class="fa-solid fa-stethoscope"></i>
+            <h3>General Medicine</h3>
+            <p>Comprehensive diagnosis and treatment for all general health concerns.</p>
+            <a href="#">Read More →</a>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= DEPARTMENTS SECTION END ================= -->
+ <!-- ================= DOCTORS SECTION START ================= -->
+
+<section id="doctors" class="doctors">
+
+    <div class="section-heading">
+
+        <span>OUR DOCTORS</span>
+
+        <h2>Meet Our Specialists</h2>
+
+        <p>
+            Our experienced doctors are committed to providing
+            exceptional healthcare with compassion and expertise.
+        </p>
+
+    </div>
+
+    <div class="doctor-grid">
+
+        <div class="doctor-card">
+
+            <img src="{% static 'images/doctor1.jpg' %}" alt="Doctor">
+
+            <div class="doctor-content">
+
+                <h3>Dr. John Mathew</h3>
+
+                <span>Cardiologist</span>
+
+                <p>
+                    15+ years of experience in heart care and cardiac surgery.
+                </p>
+
+                <a href="#appointment" class="doctor-btn">
+                    Book Appointment
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="doctor-card">
+
+            <img src="{% static 'images/doctor2.jpg' %}" alt="Doctor">
+
+            <div class="doctor-content">
+
+                <h3>Dr. Sarah Joseph</h3>
+
+                <span>Neurologist</span>
+
+                <p>
+                    Specialist in neurological disorders and brain surgery.
+                </p>
+
+                <a href="#appointment" class="doctor-btn">
+                    Book Appointment
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="doctor-card">
+
+            <img src="{% static 'images/doctor3.jpg' %}" alt="Doctor">
+
+            <div class="doctor-content">
+
+                <h3>Dr. David Thomas</h3>
+
+                <span>Orthopedic Surgeon</span>
+
+                <p>
+                    Expert in joint replacement and sports injury treatment.
+                </p>
+
+                <a href="#appointment" class="doctor-btn">
+                    Book Appointment
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="doctor-card">
+
+            <img src="{% static 'images/doctor4.jpg' %}" alt="Doctor">
+
+            <div class="doctor-content">
+
+                <h3>Dr. Maria George</h3>
+
+                <span>Pediatrician</span>
+
+                <p>
+                    Dedicated to children's health and family-centered care.
+                </p>
+
+                <a href="#appointment" class="doctor-btn">
+                    Book Appointment
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= DOCTORS SECTION END ================= -->
+ <!-- ================= APPOINTMENT SECTION START ================= -->
+
+<section id="appointment" class="appointment">
+
+    <div class="appointment-container">
+
+        <div class="appointment-left">
+
+            <span class="section-title">
+                BOOK APPOINTMENT
+            </span>
+
+            <h2>
+                Schedule Your Visit
+                With Our Specialists
+            </h2>
+
+            <p>
+                Fill out the form and our team will contact you to
+                confirm your appointment. We are committed to providing
+                timely and quality healthcare for every patient.
+            </p>
+
+            <div class="appointment-info">
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-phone"></i>
+
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+91 98765 43210</p>
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    <div>
+                        <h4>Email</h4>
+                        <p>info@aswanihospital.com</p>
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <div>
+                        <h4>Location</h4>
+                        <p>Kerala, India</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="appointment-right">
+
+            <form>
+
+                <input type="text" placeholder="Full Name" required>
+
+                <input type="email" placeholder="Email Address" required>
+
+                <input type="tel" placeholder="Phone Number" required>
+
+                <select required>
+                    <option>Select Department</option>
+                    <option>Cardiology</option>
+                    <option>Neurology</option>
+                    <option>Orthopedics</option>
+                    <option>Pediatrics</option>
+                    <option>General Medicine</option>
+                </select>
+
+                <input type="date" required>
+
+                <textarea rows="5" placeholder="Message"></textarea>
+
+                <button type="submit">
+                    Book Appointment
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= APPOINTMENT SECTION END ================= -->
+ <!-- ================= CONTACT SECTION START ================= -->
+
+<section id="contact" class="contact">
+
+    <div class="section-heading">
+
+        <span>CONTACT US</span>
+
+        <h2>We're Here To Help You</h2>
+
+        <p>
+            Contact us for appointments, emergency services, or any
+            healthcare-related enquiries.
+        </p>
+
+    </div>
+
+    <div class="contact-container">
+
+        <!-- Contact Information -->
+
+        <div class="contact-info">
+
+            <div class="contact-box">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <div>
+
+                    <h4>Address</h4>
+
+                    <p>
+                        Aswani Hospital<br>
+                        Kozhikode, Kerala, India
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="contact-box">
+
+                <i class="fa-solid fa-phone"></i>
+
+                <div>
+
+                    <h4>Phone</h4>
+
+                    <p>+91 98765 43210</p>
+
+                </div>
+
+            </div>
+
+            <div class="contact-box">
+
+                <i class="fa-solid fa-envelope"></i>
+
+                <div>
+
+                    <h4>Email</h4>
+
+                    <p>info@aswanihospital.com</p>
+
+                </div>
+
+            </div>
+
+            <div class="contact-box">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <div>
+
+                    <h4>Working Hours</h4>
+
+                    <p>
+                        Mon - Sat : 8:00 AM - 8:00 PM
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Map -->
+
+        <div class="contact-map">
+
+            <iframe
+                src="https://www.google.com/maps?q=Kozhikode,Kerala&output=embed"
+                loading="lazy">
+            </iframe>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= CONTACT SECTION END ================= -->
 {% endblock %}
