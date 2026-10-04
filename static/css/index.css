@@ -8,7 +8,7 @@
 
     background:
     linear-gradient(rgba(5,15,30,.72),rgba(5,15,30,.82)),
-    url("../images/hero.jpg");
+    url("homepagephoto.jpg") no-repeat center center;
 
     background-size:cover;
     background-position:center;

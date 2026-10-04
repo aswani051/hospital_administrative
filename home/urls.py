@@ -15,4 +15,9 @@ urlpatterns = [
  path('patient-dashboard/',views.patient_dashboard,name='patient_dashboard'),
  path('login/', views.patient_login, name='login'),
  path('profile/', views.profile, name='profile'),
+ path(
+    'ai-patient-assistant/',
+    views.ai_patient_assistant,
+    name='ai_patient_assistant'
+),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

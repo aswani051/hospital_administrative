@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import bookingform, PrescriptionForm
 from .models import Department, Doctor, Prescription
 
+from prescription.gemini_service import patient_assistant
+
 
 def index(request):
     return render(request, 'index.html')
@@ -155,4 +157,36 @@ def profile(request):
     return render(
         request,
         'profile.html'
+    )
+def ai_patient_assistant(request):
+
+    response = None
+    symptoms = ""
+
+    if request.method == 'POST':
+
+        symptoms = request.POST.get(
+            'symptoms',
+            ''
+        ).strip()
+
+        if symptoms:
+
+            try:
+
+                response = patient_assistant(
+                    symptoms
+                )
+
+            except Exception as e:
+
+                response = f"AI Error: {str(e)}"
+
+    return render(
+        request,
+        'ai_patient_assistant.html',
+        {
+            'response': response,
+            'symptoms': symptoms,
+        }
     )
