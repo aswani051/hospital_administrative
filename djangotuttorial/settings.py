@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
+    'chatbot',
     'crispy_forms',
     'crispy_bootstrap4',
     'prescription',
