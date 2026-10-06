@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.getElementById("chatbot-toggle");
     const closeButton = document.getElementById("chatbot-close");
     const chatbotWindow = document.getElementById("chatbot-window");
+    const ctaChatbot = document.getElementById("cta-chatbot");
 
     const input = document.getElementById("chatbot-input");
     const sendButton = document.getElementById("chatbot-send");
@@ -14,7 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
         chatbotWindow.style.display = "flex";
         input.focus();
     });
-
+    // Open chatbot from CTA button
+    ctaChatbot.addEventListener("click", function () {
+        chatbotWindow.style.display = "flex";
+        input.focus();
+    });
 
     // Close chatbot
     closeButton.addEventListener("click", function () {
