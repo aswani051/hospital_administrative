@@ -1,230 +1,1450 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaCare | Patient Dashboard</title>
 
-<title>Patient Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
 
-<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
+        body {
+            background: #f5f8fc;
+            color: #172033;
+        }
 
-body{
-background:#f4f7fc;
-}
+        a {
+            text-decoration: none;
+        }
 
-.header{
-height:80px;
-background:#2563eb;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 40px;
-color:white;
-}
 
-.container{
-display:flex;
-}
+        /* =========================
+           SIDEBAR
+        ========================= */
 
-.sidebar{
-width:260px;
-min-height:100vh;
-background:#0f172a;
-padding:30px 0;
-}
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #ffffff;
+            border-right: 1px solid #e7edf5;
+            padding: 28px 18px;
+            z-index: 100;
+        }
 
-.sidebar a{
-display:block;
-padding:18px 30px;
-text-decoration:none;
-color:white;
-font-size:16px;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px 35px;
+        }
 
-.sidebar a:hover{
-background:#2563eb;
-}
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: #2563eb;
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
 
-.content{
-flex:1;
-padding:30px;
-}
+        .logo h2 {
+            font-size: 20px;
+            color: #172033;
+        }
 
-.card-container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
+        .logo span {
+            color: #2563eb;
+        }
 
-.card{
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+        .menu-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 13px;
+            margin-bottom: 12px;
+        }
 
-.upload-box{
-background:white;
-padding:25px;
-margin-top:30px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
 
-button{
-padding:12px 20px;
-background:#2563eb;
-border:none;
-color:white;
-border-radius:8px;
-cursor:pointer;
-}
+        .nav-link:hover {
+            background: #eff6ff;
+            color: #2563eb;
+        }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
 
-th,td{
-padding:12px;
-border:1px solid #ddd;
-text-align:center;
-}
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
 
-th{
-background:#2563eb;
-color:white;
-}
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 18px;
+            right: 18px;
+        }
 
-</style>
+        .logout a {
+            color: #ef4444;
+        }
+
+        .logout a:hover {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e7edf5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+        }
+
+        .page-title h3 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .page-title p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification {
+            width: 38px;
+            height: 38px;
+            border: 1px solid #e5eaf1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .user-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info span {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 32px 35px 50px;
+            max-width: 1500px;
+        }
+
+
+        /* =========================
+           WELCOME BANNER
+        ========================= */
+
+        .welcome {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border-radius: 20px;
+            padding: 32px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            font-size: 14px;
+            opacity: 0.85;
+            max-width: 550px;
+            line-height: 1.6;
+        }
+
+        .welcome-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: white;
+            color: #2563eb;
+            padding: 11px 20px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .welcome-art {
+            font-size: 100px;
+            opacity: 0.15;
+            margin-right: 40px;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .section-title {
+            margin: 30px 0 15px;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 15px;
+            padding: 21px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            background: #eff6ff;
+        }
+
+        .stat-info span {
+            display: block;
+            color: #94a3b8;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .stat-info strong {
+            font-size: 19px;
+        }
+
+
+        /* =========================
+           MAIN GRID
+        ========================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h3 {
+            font-size: 15px;
+        }
+
+        .view-link {
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           APPOINTMENT
+        ========================= */
+
+        .appointment {
+            border: 1px solid #e8edf4;
+            border-radius: 12px;
+            padding: 17px;
+        }
+
+        .doctor-row {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .doctor-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .doctor-name strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .doctor-name span {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .appointment-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #edf1f5;
+        }
+
+        .detail span {
+            display: block;
+            font-size: 10px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .detail strong {
+            font-size: 12px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #ecfdf5;
+            color: #059669;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .action {
+            border: 1px solid #e8edf4;
+            border-radius: 11px;
+            padding: 15px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .action:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #f8fbff;
+        }
+
+        .action-icon {
+            display: block;
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+
+        /* =========================
+           PRESCRIPTION
+        ========================= */
+
+        .prescription-panel {
+            margin-top: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            padding: 12px;
+        }
+
+        td {
+            padding: 13px 12px;
+            border-top: 1px solid #edf1f5;
+            font-size: 12px;
+        }
+
+        td a {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           AI ASSISTANT
+        ========================= */
+
+        .ai-card {
+            margin-top: 20px;
+            background: #0f172a;
+            color: white;
+            border-radius: 16px;
+            padding: 23px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-card h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .ai-card p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .ai-button {
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+            }
+
+            .logo {
+                justify-content: center;
+                padding: 0 0 30px;
+            }
+
+            .logo h2,
+            .menu-title,
+            .nav-link span,
+            .user-info {
+                display: none;
+            }
+
+            .nav-link {
+                justify-content: center;
+                padding: 13px;
+            }
+
+            .logout {
+                left: 10px;
+                right: 10px;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px 15px 40px;
+            }
+
+            .welcome {
+                padding: 25px;
+            }
+
+            .welcome h1 {
+                font-size: 21px;
+            }
+
+            .welcome-art {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .appointment-details {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-card {
+                display: block;
+            }
+
+            .ai-button {
+                display: inline-block;
+                margin-top: 15px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-<div class="header">
 
-<h1>🏥 Patient Dashboard</h1>
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
 
-<h3>Welcome {{ request.user.username }}</h3>
+    <aside class="sidebar">
 
-</div>
+        <div class="logo">
 
-<div class="container">
+            <div class="logo-icon">
+                🏥
+            </div>
 
-<div class="sidebar">
+            <h2>
+                Nova<span>Care</span>
+            </h2>
 
-<a href="#">👤 My Profile</a>
-
-<a href="/booking/">📅 Book Appointment</a>
-
-<a href="#">⏳ Appointment Status</a>
-
-<a href="#">👨‍⚕️ Doctor Details</a>
-
-<a href="#">🩺 Medical History</a>
-
-<a href="#">📄 Previous Prescriptions</a>
-
-<a href="#">📤 Upload Prescription</a>
-
-<a href="/logout/">🚪 Logout</a>
-
-</div>
-
-<div class="content">
-
-<div class="card-container">
-
-<div class="card">
-
-<a href="/profile/">👤 My Profile</a>
-
-<p>View your profile information.</p>
-
-</div>
+        </div>
 
 
-<div class="card">
-
-<h3>🎟 Your Token Number</h3>
-
-<h1>{{ token_no }}</h1>
-
-<p>Please wait for your turn.</p>
-
-</div>
-
-<div class="card">
-
-<h3>📄 Prescriptions</h3>
-
-<p>View uploaded prescriptions.</p>
-
-</div>
-
-</div>
+        <div class="menu-title">
+            Patient Menu
+        </div>
 
 
+        <a href="#" class="nav-link active">
 
-<div class="upload-box">
+            <span class="nav-icon">
+                🏠
+            </span>
 
-<h2>Prescription History</h2>
+            <span>
+                Dashboard
+            </span>
 
-<table>
+        </a>
 
-<tr>
 
-<th>Patient</th>
+        <a href="/profile/" class="nav-link">
 
-<th>Prescription</th>
+            <span class="nav-icon">
+                👤
+            </span>
 
-<th>Date</th>
+            <span>
+                My Profile
+            </span>
 
-</tr>
+        </a>
 
-{% for p in prescriptions %}
 
-<tr>
+        <a href="/booking/" class="nav-link">
 
-<td>{{ p.patient_name }}</td>
+            <span class="nav-icon">
+                📅
+            </span>
 
-<td>
+            <span>
+                Book Appointment
+            </span>
 
-<a href="{{ p.prescription_file.url }}">
+        </a>
 
-View File
 
-</a>
+        <a href="#appointment-status" class="nav-link">
 
-</td>
+            <span class="nav-icon">
+                ⏳
+            </span>
 
-<td>{{ p.uploaded_at }}</td>
+            <span>
+                Appointment Status
+            </span>
 
-</tr>
+        </a>
 
-{% endfor %}
 
-</table>
+        <a href="#doctor-details" class="nav-link">
 
-</div>
+            <span class="nav-icon">
+                👨‍⚕️
+            </span>
 
-</div>
+            <span>
+                Doctor Details
+            </span>
 
-</div>
+        </a>
+
+
+        <a href="#medical-history" class="nav-link">
+
+            <span class="nav-icon">
+                🩺
+            </span>
+
+            <span>
+                Medical History
+            </span>
+
+        </a>
+
+
+        <a href="#prescription-history" class="nav-link">
+
+            <span class="nav-icon">
+                📄
+            </span>
+
+            <span>
+                Previous Prescriptions
+            </span>
+
+        </a>
+
+
+        <div class="logout">
+
+            <a href="/logout/" class="nav-link">
+
+                <span class="nav-icon">
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <h3>
+                    Patient Dashboard
+                </h3>
+
+                <p>
+                    Manage your healthcare in one place
+                </p>
+
+            </div>
+
+
+            <div class="top-right">
+
+                <div class="notification">
+                    🔔
+                </div>
+
+
+                <div class="user-mini">
+
+                    <div class="avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <div class="user-info">
+
+                        <strong>
+                            {{ request.user.username }}
+                        </strong>
+
+                        <span>
+                            Patient
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- =========================
+                 WELCOME
+            ========================= -->
+
+            <section class="welcome">
+
+                <div class="welcome-content">
+
+                    <h1>
+                        Welcome back, {{ request.user.username }} 👋
+                    </h1>
+
+                    <p>
+                        Take control of your healthcare with NovaCare.
+                        View appointments, prescriptions, doctors and your
+                        personal health information from one place.
+                    </p>
+
+                    <a href="/booking/" class="welcome-btn">
+                        📅 Book an Appointment
+                    </a>
+
+                </div>
+
+
+                <div class="welcome-art">
+                    🩺
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 STATISTICS
+            ========================= -->
+
+            <h2 class="section-title">
+                Your Overview
+            </h2>
+
+
+            <section class="stats">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        🎟️
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Your Token
+                        </span>
+
+                        <strong>
+                            {{ token_no|default:"--" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📅
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Appointments
+                        </span>
+
+                        <strong>
+                            {% if patient_booking %}
+                                01
+                            {% else %}
+                                00
+                            {% endif %}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📄
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Prescriptions
+                        </span>
+
+                        <strong>
+                            {{ prescriptions|length }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ❤️
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Health Status
+                        </span>
+
+                        <strong>
+                            Active
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 MAIN DASHBOARD GRID
+            ========================= -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- APPOINTMENT -->
+
+                <div class="panel" id="appointment-status">
+
+                    <div class="panel-header">
+
+                        <h3>
+                            📅 Upcoming Appointment
+                        </h3>
+
+                        <a href="/booking/" class="view-link">
+                            Book New
+                        </a>
+
+                    </div>
+
+                                     
+
+
+                    <div class="appointment">
+
+
+                        {% if patient_booking %}
+
+
+                        <div class="doctor-row">
+
+                            <div class="doctor-avatar">
+                                👨‍⚕️
+                            </div>
+
+                            <div class="doctor-name">
+
+                                <strong>
+                                     {{ patient_booking.doc_name.doc_name }}
+                                </strong>
+
+                                <span>
+                                    {{ patient_booking.doc_name.doc_spec }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="appointment-details">
+
+                            <div class="detail">
+
+                                <span>
+                                    DATE
+                                </span>
+
+                                <strong>
+                                    {{ patient_booking.booking_date|date:"d M Y" }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail">
+
+                                <span>
+                                    DEPARTMENT
+                                </span>
+
+                                <strong>
+                                    {{ patient_booking.doc_name.dep_name.name }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail">
+
+                                <span>
+                                    TOKEN
+                                </span>
+
+                                <strong>
+                                    #{{ patient_booking.token_no }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <span class="status">
+                            ● Appointment Booked
+                        </span>
+
+
+                        {% else %}
+
+
+                        <div class="empty">
+
+                            <div style="font-size:35px; margin-bottom:10px;">
+                                📅
+                            </div>
+
+                            <strong>
+                                No appointment found
+                            </strong>
+
+                            <p style="margin-top:6px;">
+                                You don't have an appointment yet.
+                            </p>
+
+                            <a href="/booking/"
+                               class="view-link"
+                               style="display:inline-block; margin-top:12px;">
+
+                                Book an Appointment →
+
+                            </a>
+
+                        </div>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>
+                            ⚡ Quick Actions
+                        </h3>
+
+                    </div>
+
+
+                    <div class="actions">
+
+
+                        <a href="/profile/" class="action">
+
+                            <span class="action-icon">
+                                👤
+                            </span>
+
+                            My Profile
+
+                        </a>
+
+
+                        <a href="/booking/" class="action">
+
+                            <span class="action-icon">
+                                📅
+                            </span>
+
+                            Book Appointment
+
+                        </a>
+
+
+                        <a href="#medical-history" class="action">
+
+                            <span class="action-icon">
+                                🩺
+                            </span>
+
+                            Medical History
+
+                        </a>
+
+
+                        <a href="#doctor-details" class="action">
+
+                            <span class="action-icon">
+                                👨‍⚕️
+                            </span>
+
+                            Doctor Details
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =========================
+                 DOCTOR DETAILS
+            ========================= -->
+
+            <section class="panel" id="doctor-details" style="margin-top:20px;">
+
+                <div class="panel-header">
+
+                    <h3>
+                        👨‍⚕️ Doctor Details
+                    </h3>
+
+                    <a href="/doctors/" class="view-link">
+                        View Doctors
+                    </a>
+
+                </div>
+
+                {% if patient_booking %}
+
+                    <div class="appointment">
+
+                        <div class="doctor-row">
+
+                            <div class="doctor-avatar">
+                                👨‍⚕️
+                            </div>
+
+                            <div class="doctor-name">
+
+                                <strong>
+                                    {{ patient_booking.doc_name.doc_name }}
+                                </strong>
+
+                                <span>
+                                    {{ patient_booking.doc_name.doc_spec }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="appointment-details">
+
+                            <div class="detail">
+                                <span>DEPARTMENT</span>
+                                <strong>
+                                    {{ patient_booking.doc_name.dep_name.name }}
+                                </strong>
+                            </div>
+
+                            <div class="detail">
+                                <span>APPOINTMENT DATE</span>
+                                <strong>
+                                    {{ patient_booking.booking_date|date:"d M Y" }}
+                                </strong>
+                            </div>
+
+                            <div class="detail">
+                                <span>TOKEN</span>
+                                <strong>
+                                    #{{ patient_booking.token_no }}
+                                </strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty">
+                        <div style="font-size:35px; margin-bottom:10px;">
+                            👨‍⚕️
+                        </div>
+                        <strong>No doctor assigned yet</strong>
+                        <p style="margin-top:6px;">
+                            Book an appointment to view your doctor details.
+                        </p>
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- =========================
+                 MEDICAL HISTORY
+            ========================= -->
+
+            <section class="panel" id="medical-history" style="margin-top:20px;">
+
+                <div class="panel-header">
+
+                    <h3>
+                        🩺 Medical History
+                    </h3>
+
+                </div>
+
+                <div class="empty">
+
+                    <div style="font-size:35px; margin-bottom:10px;">
+                        🩺
+                    </div>
+
+                    <strong>
+                        No medical history records available
+                    </strong>
+
+                    <p style="margin-top:6px;">
+                        Your medical history will appear here when records are added.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 PRESCRIPTION HISTORY
+            ========================= -->
+
+            <section class="panel prescription-panel" id="prescription-history">
+
+                <div class="panel-header">
+
+                    <h3>
+                        📄 Prescription History
+                    </h3>
+
+                    <a href="#" class="view-link">
+                        View All
+                    </a>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Patient
+                                </th>
+
+                                <th>
+                                    Prescription
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for p in prescriptions %}
+
+                            <tr>
+
+                                <td>
+                                    {{ p.patient_name }}
+                                </td>
+
+                                <td>
+
+                                    <a href="{{ p.prescription_file.url }}">
+
+                                        📄 View File
+
+                                    </a>
+
+                                </td>
+
+                                <td>
+                                    {{ p.uploaded_at }}
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td colspan="3" class="empty">
+
+                                    No prescription records available.
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 AI ASSISTANT
+            ========================= -->
+
+            <section class="ai-card" id="ai-assistant">
+
+                <div>
+
+                    <h3>
+                        🤖 NovaCare AI Patient Assistant
+                    </h3>
+
+                    <p>
+                        Get assistance with departments, appointments,
+                        doctors and general hospital information.
+                    </p>
+
+                </div>
+
+
+                <a href="#" class="ai-button">
+
+                    💬 Open AI Assistant
+
+                </a>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
 
 </body>
 

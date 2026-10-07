@@ -1,415 +1,120 @@
-from django.shortcuts import render, redirect
-from .forms import PrescriptionForm
-from .models import Prescription
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
-import easyocr
-from rapidfuzz import process
-import os
+from .forms import PrescriptionForm, MedicineFormSet
+from .models import Prescription, PrescriptionMedicine
 
-from .gemini_service import analyze_prescription
-
-# -------------------------
-# EasyOCR Reader
-# -------------------------
-
-reader = easyocr.Reader(['en'])
-
-# -------------------------
-# Medicines File
-# -------------------------
-
-MEDICINES_FILE = os.path.join(
-    os.path.dirname(__file__),
-    'medicines.txt'
-)
-
-with open(
-    MEDICINES_FILE,
-    'r',
-    encoding='utf-8'
-) as file:
-
-    MEDICINE_LIST = [
-
-        line.strip()
-
-        for line in file
-
-        if line.strip()
-
-    ]
+from home.models import Doctor, booking
 
 
-# -------------------------
-# Upload Prescription
-# -------------------------
+@login_required
+def create_prescription(request, appointment_id):
 
-def upload_prescription(request):
+    appointment = get_object_or_404(
+        booking,
+        id=appointment_id
+    )
+
+    doctor = get_object_or_404(
+        Doctor,
+        user=request.user
+    )
 
     if request.method == 'POST':
 
-        form = PrescriptionForm(
-            request.POST,
-            request.FILES
+        prescription_form = PrescriptionForm(
+            request.POST
         )
 
-        if form.is_valid():
+        medicine_formset = MedicineFormSet(
+            request.POST,
+            queryset=PrescriptionMedicine.objects.none()
+        )
 
-            obj = form.save()
+        if (
+            prescription_form.is_valid()
+            and medicine_formset.is_valid()
+        ):
 
-            # OCR
-
-            results = reader.readtext(
-                obj.image.path
+            # Save prescription
+            prescription = prescription_form.save(
+                commit=False
             )
 
-            text = ""
+            # Connect prescription to patient appointment
+            prescription.patient = appointment
 
-            for result in results:
+            prescription.patient_name = appointment.p_name
 
-                text += result[1] + "\n"
+            prescription.save()
 
-            patient = "Not Detected"
 
-            medicine = "Not Detected"
+            # Save medicines
+            medicines = medicine_formset.save(
+                commit=False
+            )
 
-            dosage = "Not Detected"
+            for medicine in medicines:
 
-            lines = [
+                # Skip completely empty medicine rows
+                if not medicine.medicine_name:
+                    continue
 
-                line.strip()
+                medicine.prescription = prescription
 
-                for line in text.split('\n')
+                medicine.save()
 
-                if line.strip()
 
-            ]
-
-            # -------------------------
-            # Patient Detection
-            # -------------------------
-
-            for i, line in enumerate(lines):
-
-                if "name" in line.lower():
-
-                    patient_parts = []
-
-                    for j in range(
-                        i + 1,
-                        min(i + 4, len(lines))
-                    ):
-
-                        next_line = lines[j]
-
-                        if (
-
-                            "date" in next_line.lower()
-
-                            or "age" in next_line.lower()
-
-                            or "address" in next_line.lower()
-
-                        ):
-
-                            break
-
-                        patient_parts.append(
-                            next_line
-                        )
-
-                    patient = " ".join(
-                        patient_parts
-                    ).strip()
-
-                    if patient:
-
-                        break
-
-            # -------------------------
-            # Dosage Detection
-            # -------------------------
-
-            dosages = []
-
-            for line in lines:
-
-                if (
-
-                    "mg" in line.lower()
-
-                    or "tablet" in line.lower()
-
-                    or "capsule" in line.lower()
-
-                    or "daily" in line.lower()
-
-                ):
-
-                    dosages.append(line)
-
-            if dosages:
-
-                dosage = ", ".join(
-
-                    list(
-                        dict.fromkeys(
-                            dosages
-                        )
-                    )[:3]
-
-                )
-
-            # -------------------------
-            # Medicine Detection
-            # -------------------------
-
-            detected_medicines = []
-
-            for line in lines:
-
-                match = process.extractOne(
-
-                    line,
-
-                    MEDICINE_LIST,
-
-                    score_cutoff=80
-
-                )
-
-                if match:
-
-                    medicine_name = match[0]
-
-                    if medicine_name not in detected_medicines:
-
-                        detected_medicines.append(
-                            medicine_name
-                        )
-
-            if detected_medicines:
-
-                medicine = ", ".join(
-                    detected_medicines
-                )
-
-            # -------------------------
-            # Gemini AI Table
-            # -------------------------
-
-            try:
-
-                medicine_table = analyze_prescription(
-                    text
-                )
-
-            except Exception:
-
-                medicine_table = []
-
-            # -------------------------
-            # Save Database
-            # -------------------------
-
-            obj.extracted_text = text
-
-            obj.patient_name = patient
-
-            obj.medicine = medicine
-
-            obj.dosage = dosage
-
-            obj.save()
-
-            return render(
-
-                request,
-
-                'result.html',
-
-                {
-
-                    'text': text,
-
-                    'patient': patient,
-
-                    'medicine': medicine,
-
-                    'dosage': dosage,
-
-                    'detected_medicines': detected_medicines,
-
-                    'medicine_table': medicine_table,
-
-                }
-
+            # Go back to doctor dashboard
+            return redirect(
+                'doctor_dashboard'
             )
 
     else:
 
-        form = PrescriptionForm()
+        prescription_form = PrescriptionForm()
 
-    return render(
-
-        request,
-
-        'upload.html',
-
-        {
-
-            'form': form
-
-        }
-
-    )
-
-
-# -------------------------
-# History
-# -------------------------
-
-def history(request):
-
-    search = request.GET.get(
-        'search'
-    )
-
-    prescriptions = (
-
-        Prescription.objects
-
-        .all()
-
-        .order_by('-id')
-
-    )
-
-    if search:
-
-        prescriptions = prescriptions.filter(
-
-            patient_name__icontains=search
-
+        medicine_formset = MedicineFormSet(
+            queryset=PrescriptionMedicine.objects.none()
         )
 
-    return render(
-
-        request,
-
-        'history.html',
-
-        {
-
-            'prescriptions': prescriptions,
-
-            'search': search,
-
-        }
-
-    )
-
-
-# -------------------------
-# Update Status
-# -------------------------
-
-def update_status(
-
-    request,
-
-    prescription_id,
-
-    new_status
-
-):
-
-    prescription = Prescription.objects.get(
-
-        id=prescription_id
-
-    )
-
-    prescription.status = new_status
-
-    prescription.save()
-
-    return redirect('history')
-
-
-# -------------------------
-# Delete
-# -------------------------
-
-def delete_prescription(
-
-    request,
-
-    prescription_id
-
-):
-
-    prescription = Prescription.objects.get(
-
-        id=prescription_id
-
-    )
-
-    prescription.delete()
-
-    return redirect('history')
-
-
-# -------------------------
-# Dashboard
-# -------------------------
-
-def dashboard(request):
-
-    total = Prescription.objects.count()
-
-    pending = Prescription.objects.filter(
-
-        status='Pending'
-
-    ).count()
-
-    processing = Prescription.objects.filter(
-
-        status='Processing'
-
-    ).count()
-
-    ready = Prescription.objects.filter(
-
-        status='Ready'
-
-    ).count()
-
-    dispensed = Prescription.objects.filter(
-
-        status='Dispensed'
-
-    ).count()
 
     return render(
-
         request,
-
-        'dashboard.html',
-
+        'create_prescription.html',
         {
+            'prescription_form': prescription_form,
 
-            'total': total,
+            'medicine_formset': medicine_formset,
 
-            'pending': pending,
+            'appointment': appointment,
 
-            'processing': processing,
-
-            'ready': ready,
-
-            'dispensed': dispensed,
-
+            'doctor': doctor,
         }
+    )
 
+
+@login_required
+def view_prescription(request, prescription_id):
+
+    prescription = get_object_or_404(
+        Prescription,
+        id=prescription_id
+    )
+
+    doctor = get_object_or_404(
+        Doctor,
+        user=request.user
+    )
+
+    return render(
+        request,
+        'view_prescription.html',
+        {
+            'prescription': prescription,
+
+            'appointment': prescription.patient,
+
+            'doctor': doctor,
+        }
     )

@@ -20,4 +20,6 @@ urlpatterns = [
     views.ai_patient_assistant,
     name='ai_patient_assistant'
 ),
+ path('doctor-dashboard/', views.doctor_dashboard, name='doctor_dashboard'),
+ path('doctor-login/', views.doctor_login, name='doctor_login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

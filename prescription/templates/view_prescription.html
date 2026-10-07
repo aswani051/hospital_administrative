@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Prescription | NovaCare Hospital</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px 40px;
+        }
+
+        /* HEADER */
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #0d6efd;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .print-btn {
+            border: none;
+            background: #0d6efd;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* PRESCRIPTION */
+
+        .prescription {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .hospital-header {
+            background: #0d6efd;
+            color: white;
+            padding: 25px 30px;
+        }
+
+        .hospital-header h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+
+        .hospital-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        /* DOCTOR */
+
+        .doctor-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .doctor-info h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .doctor-info p {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        .date {
+            text-align: right;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* PATIENT */
+
+        .section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            margin-bottom: 14px;
+        }
+
+        .patient-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .patient-item {
+            background: #f8fafc;
+            padding: 13px;
+            border-radius: 8px;
+        }
+
+        .patient-item small {
+            display: block;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .patient-item strong {
+            font-size: 14px;
+        }
+
+        /* TEXT */
+
+        .text-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        /* MEDICINES */
+
+        .medicine-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .medicine-table th,
+        .medicine-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .medicine-table th {
+            background: #f8fafc;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .medicine-table td:first-child {
+            font-weight: 600;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature {
+            text-align: right;
+        }
+
+        .signature p {
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        @media (max-width: 700px) {
+
+            .page {
+                margin: 20px auto;
+                padding: 0 12px 30px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .patient-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .doctor-info {
+                flex-direction: column;
+            }
+
+            .date {
+                text-align: left;
+            }
+
+            .medicine-table {
+                min-width: 700px;
+            }
+
+            .medicine-container {
+                overflow-x: auto;
+            }
+
+        }
+
+
+        @media print {
+
+            body {
+                background: white;
+            }
+
+            .page {
+                margin: 0;
+                max-width: none;
+            }
+
+            .top {
+                display: none;
+            }
+
+            .prescription {
+                border: none;
+                box-shadow: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- TOP -->
+
+    <div class="top">
+
+        <a
+            href="{% url 'doctor_dashboard' %}"
+            class="back-btn"
+        >
+            ← Back to Dashboard
+        </a>
+
+        <button
+            class="print-btn"
+            onclick="window.print()"
+        >
+            Print
+        </button>
+
+    </div>
+
+
+    <!-- PRESCRIPTION -->
+
+    <div class="prescription">
+
+
+        <!-- HOSPITAL HEADER -->
+
+        <div class="hospital-header">
+
+            <h1>NovaCare Hospital</h1>
+
+            <p>
+                Healthcare • Care • Technology
+            </p>
+
+        </div>
+
+
+        <div class="content">
+
+
+            <!-- DOCTOR -->
+
+            <div class="doctor-info">
+
+                <div>
+
+                    <h2>
+                        Dr. {{ doctor.doc_name }}
+                    </h2>
+
+                    <p>
+                        {{ doctor.doc_spec }}
+                    </p>
+
+                    <p>
+                        {{ doctor.dep_name.name }} Department
+                    </p>
+
+                </div>
+
+
+                <div class="date">
+
+                    <strong>
+                        Prescription Date
+                    </strong>
+
+                    <p>
+                        {{ prescription.created_at|date:"d M Y" }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PATIENT -->
+
+            <div class="section">
+
+                <h3 class="section-title">
+                    Patient Details
+                </h3>
+
+
+                <div class="patient-grid">
+
+                    <div class="patient-item">
+
+                        <small>
+                            Patient Name
+                        </small>
+
+                        <strong>
+                            {{ appointment.p_name }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="patient-item">
+
+                        <small>
+                            Phone
+                        </small>
+
+                        <strong>
+                            {{ appointment.p_phone }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="patient-item">
+
+                        <small>
+                            Token
+                        </small>
+
+                        <strong>
+                            #{{ appointment.token_no }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SYMPTOMS -->
+
+            <div class="section">
+
+                <h3 class="section-title">
+                    Symptoms
+                </h3>
+
+                <div class="text-box">
+
+                    {{ prescription.symptoms }}
+
+                </div>
+
+            </div>
+
+
+            <!-- DIAGNOSIS -->
+
+            <div class="section">
+
+                <h3 class="section-title">
+                    Diagnosis
+                </h3>
+
+                <div class="text-box">
+
+                    {{ prescription.diagnosis }}
+
+                </div>
+
+            </div>
+
+
+            <!-- MEDICINES -->
+
+            <div class="section">
+
+                <h3 class="section-title">
+                    Medicines
+                </h3>
+
+
+                <div class="medicine-container">
+
+                    <table class="medicine-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Medicine</th>
+
+                                <th>Dosage</th>
+
+                                <th>Frequency</th>
+
+                                <th>Duration</th>
+
+                                <th>Instructions</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for medicine in prescription.medicines.all %}
+
+                            <tr>
+
+                                <td>
+                                    {{ medicine.medicine_name }}
+                                </td>
+
+                                <td>
+                                    {{ medicine.dosage }}
+                                </td>
+
+                                <td>
+                                    {{ medicine.frequency }}
+                                </td>
+
+                                <td>
+                                    {{ medicine.duration }}
+                                </td>
+
+                                <td>
+                                    {{ medicine.instructions }}
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td colspan="5">
+                                    No medicines added.
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADDITIONAL INSTRUCTIONS -->
+
+            {% if prescription.additional_instructions %}
+
+            <div class="section">
+
+                <h3 class="section-title">
+                    Additional Instructions
+                </h3>
+
+                <div class="text-box">
+
+                    {{ prescription.additional_instructions }}
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                <div>
+
+                    <strong>
+                        NovaCare Hospital
+                    </strong>
+
+                    <p>
+                        Thank you for choosing NovaCare.
+                    </p>
+
+                </div>
+
+
+                <div class="signature">
+
+                    <strong>
+                        Dr. {{ doctor.doc_name }}
+                    </strong>
+
+                    <p>
+                        Doctor's Signature
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

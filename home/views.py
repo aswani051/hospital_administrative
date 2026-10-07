@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
 from .forms import bookingform, PrescriptionForm
-from .models import Department, Doctor, Prescription
-
+from .models import Department, Doctor, Prescription, booking as Booking
+from prescription.models import Prescription
 from prescription.gemini_service import patient_assistant
+
 
 
 def index(request):
@@ -83,6 +84,15 @@ def patient_dashboard(request):
     prescriptions = Prescription.objects.all()
 
     token_no = request.session.get('token_no')
+    patient_booking = Booking.objects.filter(
+            p_email=request.user.email
+        ).select_related(
+            'doc_name',
+            'doc_name__dep_name'
+        ).order_by(
+            '-booking_date',
+            '-booked_on'
+        ).first()
 
     if request.method == 'POST':
 
@@ -109,7 +119,9 @@ def patient_dashboard(request):
 
         'prescriptions': prescriptions,
 
-        'token_no': token_no
+        'token_no': token_no,
+
+        'patient_booking': patient_booking
 
     }
 
@@ -149,7 +161,37 @@ def patient_login(request):
         request,
         'login.html'
     )
+def doctor_login(request):
 
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+
+            doctor = Doctor.objects.filter(
+                user=user
+            ).first()
+
+            if doctor:
+
+                login(request, user)
+
+                return redirect(
+                    'doctor_dashboard'
+                )
+
+    return render(
+        request,
+        'doctor_login.html'
+    )
 
 @login_required
 def profile(request):
@@ -188,5 +230,37 @@ def ai_patient_assistant(request):
         {
             'response': response,
             'symptoms': symptoms,
+        }
+    )
+@login_required
+def doctor_dashboard(request):
+
+    doctor = Doctor.objects.filter(
+        user=request.user
+    ).first()
+
+    if doctor is None:
+        return render(
+            request,
+            'doctor_dashboard.html',
+            {
+                'doctor': None,
+                'appointments': []
+            }
+        )
+
+    appointments = Booking.objects.filter(
+        doc_name=doctor
+    ).order_by(
+        'booking_date',
+        'booked_on'
+    )
+
+    return render(
+        request,
+        'doctor_dashboard.html',
+        {
+            'doctor': doctor,
+            'appointments': appointments
         }
     )

@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Write Prescription | NovaCare</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px 50px;
+        }
+
+        .top {
+            margin-bottom: 25px;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #2563eb;
+            font-size: 14px;
+        }
+
+        .top h1 {
+            margin: 14px 0 5px;
+            font-size: 30px;
+        }
+
+        .top p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .card-title {
+            margin-bottom: 20px;
+        }
+
+        .card-title h2 {
+            margin: 0 0 5px;
+            font-size: 20px;
+        }
+
+        .card-title p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .patient-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .patient-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .patient-item small {
+            display: block;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .patient-item strong {
+            font-size: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            padding: 13px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-control:focus,
+        .medicine-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .medicine-table {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .medicine-header,
+        .medicine-row {
+            display: grid;
+
+            grid-template-columns:
+                2fr
+                1fr
+                1.2fr
+                1fr
+                1.7fr;
+
+            gap: 10px;
+            min-width: 750px;
+        }
+
+        .medicine-header {
+            margin-bottom: 8px;
+        }
+
+        .medicine-header div {
+            font-size: 13px;
+            font-weight: bold;
+            color: #6b7280;
+        }
+
+        .medicine-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .add-medicine-btn {
+            margin-top: 15px;
+            border: 1px solid #2563eb;
+            background: white;
+            color: #2563eb;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .add-medicine-btn:hover {
+            background: #eff6ff;
+        }
+
+        .error-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .save-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 13px 28px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 700px) {
+
+            .page {
+                padding: 20px 12px;
+            }
+
+            .top h1 {
+                font-size: 25px;
+            }
+
+            .patient-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- HEADER -->
+
+    <div class="top">
+
+        <a
+            href="{% url 'doctor_dashboard' %}"
+            class="back"
+        >
+            ← Back to Dashboard
+        </a>
+
+        <h1>Write Prescription</h1>
+
+        <p>
+            Create a prescription for the selected patient.
+        </p>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <!-- FORM ERRORS -->
+
+        {% if prescription_form.errors or medicine_formset.errors %}
+
+        <div class="error-box">
+
+            Please check the prescription details and try again.
+
+            {{ prescription_form.errors }}
+            {{ medicine_formset.errors }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- PATIENT DETAILS -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h2>Patient Details</h2>
+
+                <p>
+                    Information from the patient's appointment
+                </p>
+
+            </div>
+
+
+            <div class="patient-grid">
+
+                <div class="patient-item">
+
+                    <small>Patient Name</small>
+
+                    <strong>
+                        {{ appointment.p_name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="patient-item">
+
+                    <small>Phone</small>
+
+                    <strong>
+                        {{ appointment.p_phone }}
+                    </strong>
+
+                </div>
+
+
+                <div class="patient-item">
+
+                    <small>Email</small>
+
+                    <strong>
+                        {{ appointment.p_email }}
+                    </strong>
+
+                </div>
+
+
+                <div class="patient-item">
+
+                    <small>Appointment Date</small>
+
+                    <strong>
+                        {{ appointment.booking_date }}
+                    </strong>
+
+                </div>
+
+
+                <div class="patient-item">
+
+                    <small>Token Number</small>
+
+                    <strong>
+                        #{{ appointment.token_no }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SYMPTOMS -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h2>Symptoms</h2>
+
+                <p>
+                    Enter the symptoms reported by the patient.
+                </p>
+
+            </div>
+
+            {{ prescription_form.symptoms }}
+
+        </div>
+
+
+        <!-- DIAGNOSIS -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h2>Diagnosis</h2>
+
+                <p>
+                    Enter the doctor's diagnosis.
+                </p>
+
+            </div>
+
+            {{ prescription_form.diagnosis }}
+
+        </div>
+
+
+        <!-- MEDICINES -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h2>Medicines</h2>
+
+                <p>
+                    Add one or more medicines prescribed for the patient.
+                </p>
+
+            </div>
+
+
+            {{ medicine_formset.management_form }}
+
+
+            <div class="medicine-header">
+
+                <div>Medicine</div>
+                <div>Dosage</div>
+                <div>Frequency</div>
+                <div>Duration</div>
+                <div>Instructions</div>
+
+            </div>
+
+
+            <div id="medicine-container">
+
+                {% for form in medicine_formset %}
+
+                <div class="medicine-row">
+
+                    {{ form.id }}
+
+                    {{ form.medicine_name }}
+
+                    {{ form.dosage }}
+
+                    {{ form.frequency }}
+
+                    {{ form.duration }}
+
+                    {{ form.instructions }}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <button
+                type="button"
+                id="add-medicine"
+                class="add-medicine-btn"
+            >
+                + Add Medicine
+            </button>
+
+        </div>
+
+
+        <!-- ADDITIONAL INSTRUCTIONS -->
+
+        <div class="card">
+
+            <div class="card-title">
+
+                <h2>Additional Instructions</h2>
+
+                <p>
+                    Add any advice or instructions for the patient.
+                </p>
+
+            </div>
+
+            {{ prescription_form.additional_instructions }}
+
+        </div>
+
+
+        <!-- SAVE -->
+
+        <div class="actions">
+
+            <button
+                type="submit"
+                class="save-btn"
+            >
+                Save Prescription
+            </button>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+
+<script>
+
+const container = document.getElementById(
+    'medicine-container'
+);
+
+const addButton = document.getElementById(
+    'add-medicine'
+);
+
+const totalForms = document.getElementById(
+    'id_form-TOTAL_FORMS'
+);
+
+
+addButton.addEventListener('click', function () {
+
+    const formCount = parseInt(
+        totalForms.value
+    );
+
+    const firstForm = container.querySelector(
+        '.medicine-row'
+    );
+
+    const newForm = firstForm.cloneNode(true);
+
+
+    newForm.innerHTML = newForm.innerHTML.replace(
+        /form-(\d+)-/g,
+        `form-${formCount}-`
+    );
+
+
+    newForm.querySelectorAll('input').forEach(
+        function(input) {
+
+            if (
+                input.type !== 'hidden'
+            ) {
+                input.value = '';
+            }
+
+        }
+    );
+
+
+    container.appendChild(newForm);
+
+
+    totalForms.value = formCount + 1;
+
+});
+
+</script>
+
+
+</body>
+
+</html>

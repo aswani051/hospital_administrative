@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
@@ -10,9 +10,19 @@ class Department(models.Model):
 
 
 class Doctor(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     doc_name = models.CharField(max_length=100)
     doc_spec = models.CharField(max_length=100)
-    dep_name = models.ForeignKey(Department, on_delete=models.CASCADE)
+    dep_name = models.ForeignKey(
+        Department,
+        on_delete=models.CASCADE
+    )
     doc_img = models.ImageField(upload_to='doctors/')
 
     def __str__(self):
