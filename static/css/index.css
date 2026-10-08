@@ -8,10 +8,12 @@
 
     background:
     linear-gradient(rgba(5,15,30,.72),rgba(5,15,30,.82)),
-    url("homepagephoto.jpg") no-repeat center center;
+    url("../images/homepagephoto.jpg") no-repeat center center;
 
-    background-size:cover;
-    background-position:center;
+     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
 
     display:flex;
     align-items:center;
